@@ -306,6 +306,10 @@ export class Game implements Logger {
         for (let i = 0; i < gameOptions.startingCorporations; i++) {
           const corpCard = corporationCards.pop();
           if (corpCard !== undefined) {
+            const terralabs = cardFinder.getCorporationCardByName(CardName.TERRALABS_RESEARCH);
+            if (terralabs && /lisa/i.test(player.name)) {
+              player.dealtCorporationCards.push(terralabs);
+            }
             player.dealtCorporationCards.push(corpCard);
           } else {
             throw new Error('No corporation card dealt for player');
