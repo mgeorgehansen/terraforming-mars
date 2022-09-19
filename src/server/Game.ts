@@ -66,6 +66,7 @@ import {ColonyDeserializer} from './colonies/ColonyDeserializer';
 import {GameLoader} from './database/GameLoader';
 import {DEFAULT_GAME_OPTIONS, GameOptions} from './GameOptions';
 import {TheNewSpaceRace} from './cards/pathfinders/TheNewSpaceRace';
+import {TerralabsResearch} from './cards/turmoil/TerralabsResearch';
 import {Logger} from './logs/Logger';
 
 export interface Score {
@@ -303,16 +304,16 @@ export class Game implements Logger {
         gameOptions.coloniesExtension ||
         gameOptions.turmoilExtension ||
         gameOptions.initialDraftVariant) {
-        for (let i = 0; i < gameOptions.startingCorporations; i++) {
-          const corpCard = corporationCards.pop();
-          if (corpCard !== undefined) {
-            const terralabs = cardFinder.getCorporationCardByName(CardName.TERRALABS_RESEARCH);
-            if (terralabs && /lisa/i.test(player.name)) {
-              player.dealtCorporationCards.push(terralabs);
+        if (player.isLisa) {
+          player.dealtCorporationCards.push(new TerralabsResearch());
+        } else {
+          for (let i = 0; i < gameOptions.startingCorporations; i++) {
+            const corpCard = corporationCards.pop();
+            if (corpCard !== undefined) {
+              player.dealtCorporationCards.push(corpCard);
+            } else {
+              throw new Error('No corporation card dealt for player');
             }
-            player.dealtCorporationCards.push(corpCard);
-          } else {
-            throw new Error('No corporation card dealt for player');
           }
         }
         if (gameOptions.initialDraftVariant === false) {

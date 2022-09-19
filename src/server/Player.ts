@@ -85,6 +85,7 @@ export class Player {
   public tags: Tags;
   public colonies: Colonies;
   public readonly production: Production;
+  public readonly isLisa: boolean;
 
   // Corporate identity
   public corporations: Array<ICorporationCard> = [];
@@ -174,6 +175,7 @@ export class Player {
     this.tags = new Tags(this);
     this.colonies = new Colonies(this);
     this.production = new Production(this);
+    this.isLisa = /lisa/i.test(name);
   }
 
   public static initialize(
